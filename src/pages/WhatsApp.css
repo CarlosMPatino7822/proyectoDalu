@@ -1,0 +1,68 @@
+.whatsapp-page{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+}
+
+.whatsapp-page h1{
+
+    font-size:5rem;
+
+    color:var(--accent);
+}
+
+.whatsapp-page p{
+
+    font-size:1.2rem;
+
+    color:var(--text-main);
+}
+
+.whatsapp-page span{
+
+    margin-top:1rem;
+
+    font-size:2rem;
+}
+
+.hidden-message{
+
+    position:absolute;
+
+    bottom:120px;
+
+    opacity:0;
+
+    transform:translateY(20px);
+
+    transition:
+        opacity 1.5s ease,
+        transform 1.5s ease;
+
+    color:var(--text-secondary);
+
+    cursor:pointer;
+}
+.hidden-message:hover{
+
+    opacity:0.18;
+    transform:
+        translateY(-10px);
+    pointer-events:auto;
+
+}
+.hidden-message.visible{
+
+    opacity:0.15;
+
+    transform:translateY(0);
+}

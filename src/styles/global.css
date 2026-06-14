@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@0;1&family=Inter:ital,opsz@0,14..32;1,14..32&display=swap');
+:root {
+
+  /* FONDOS */
+  --bg-main: #1A1D1A;
+  --bg-secondary: #26413C;
+  --bg-dark: #03120E;
+
+  /* CARDS */
+  --card-bg: #3E505B;
+
+  /* ACENTO */
+  --accent: #8AB0AB;
+
+  /* TEXTO */
+  --text-main: #E6EAEA;
+  --text-secondary: #A8B3B1;
+
+  /* EFECTOS */
+  --glow: rgba(138, 176, 171, 0.15);
+
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(138,176,171,0.12),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(94,124,118,0.12),
+      transparent 30%
+    ),
+    var(--bg-main);
+
+  color:var(--text-main);
+
+  font-family:'Inter', sans-serif;
+
+  overflow-x:hidden;
+}
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:100%;
+    height:100%;
+
+    top:0;
+    left:0;
+
+    background-image:
+        radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px);
+
+    background-size:3px 3px;
+
+    pointer-events:none;
+
+    z-index:-1;
+}
+html{
+    scroll-behavior:smooth;
+}
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Cormorant Garamond', serif;
+}

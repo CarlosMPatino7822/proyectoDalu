@@ -1,0 +1,82 @@
+.highlights{
+
+    width:100%;
+
+    padding:3rem 8%;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:1.5rem;
+}
+
+.highlight-card{
+
+    background:rgba(255,255,255,0.03);
+
+    border:1px solid rgba(138,176,171,0.1);
+
+    border-radius:24px;
+
+    padding:2rem;
+
+    text-align:center;
+
+    backdrop-filter:blur(10px);
+
+    transition:0.3s;
+}
+
+.highlight-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:rgba(138,176,171,0.3);
+}
+
+.highlight-card h3{
+
+    font-size:2.5rem;
+
+    color:var(--accent);
+
+    margin-bottom:0.5rem;
+}
+
+.highlight-card p{
+
+    color:var(--text-secondary);
+}
+.secret-card.discovered{
+
+    border-color: rgba(138,176,171,0.4);
+
+    box-shadow:
+        0 0 20px rgba(138,176,171,0.15);
+
+    animation:pulseSecret 2s ease-in-out infinite;
+}
+@keyframes pulseSecret{
+
+    0%{
+        box-shadow:0 0 10px rgba(138,176,171,0.10);
+    }
+
+    50%{
+        box-shadow:0 0 25px rgba(138,176,171,0.25);
+    }
+
+    100%{
+        box-shadow:0 0 10px rgba(138,176,171,0.10);
+    }
+
+}
+.secret-word{
+    margin-top:1rem;
+    text-align:center;
+    font-size:1rem;
+    font-family: "Cormorant Garamond",serif;
+    letter-spacing:8px;
+    color: var(--accent);
+}

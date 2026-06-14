@@ -1,0 +1,125 @@
+.datos{
+
+    width:100%;
+
+    min-height:100vh;
+
+    padding:8rem 8%;
+}
+
+.section-title{
+
+    margin-bottom:4rem;
+}
+
+.section-title p{
+
+    color:var(--accent);
+
+    letter-spacing:4px;
+
+    font-size:0.8rem;
+
+    margin-bottom:1rem;
+}
+
+.section-title h2{
+
+    font-size:4rem;
+
+    color:var(--text-main);
+}
+
+.datos-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:2rem;
+}
+
+.dato-card{
+
+    background:rgba(255,255,255,0.03);
+
+    border:1px solid rgba(138,176,171,0.12);
+
+    border-radius:30px;
+
+    padding:2.5rem;
+
+    backdrop-filter:blur(12px);
+
+    transition:0.4s;
+}
+
+.dato-card:hover{
+
+    transform:translateY(-10px);
+
+    border-color:rgba(138,176,171,0.3);
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.25);
+}
+
+.dato-card h3{
+
+    margin-bottom:1rem;
+
+    color:var(--text-main);
+
+    font-size:1.5rem;
+}
+
+.dato-card p{
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+}
+
+.dato-card img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:18px;
+
+    transition: 
+    transform .5s,
+    box-shadow .5s;
+}
+
+.dato-card:hover img{
+
+    transform:scale(1.05);
+    box-shadow: 0 0 25px rgba(138,176,171,0.35);
+}
+.secret-date p{
+    letter-spacing: 4px;
+    color: var(--accent);
+}
+.secret-date:hover{
+    cursor: pointer;
+    transform: translateY(-10px);
+    border-color: rgba(138,176,171,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+.secret-date.discovered{
+    border-color: rgba(138,176,171,0.4);
+    box-shadow: 0 0 25px rgba(138,176,171,0.15);
+}
+.intereses-img{
+    object-position: center 75%;
+}
+.detalles-img{
+    object-position: top;
+}
+.personalidad-img{
+    object-position: center 32%;
+}
