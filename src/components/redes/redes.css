@@ -1,86 +1,48 @@
 .redes{
-
     width:100%;
-
     min-height:100vh;
-
     padding:8rem 8%;
 }
-
 .redes-grid{
-
     display:grid;
-
     grid-template-columns:repeat(2,1fr);
-
     gap:2rem;
 }
-
 .red-card{
-
     padding:2rem;
-
     border-radius:30px;
-
     background:rgba(255,255,255,0.03);
-
     border:1px solid rgba(138,176,171,0.12);
-
     backdrop-filter:blur(12px);
-
     transition:0.4s;
-
     cursor:pointer;
-
     text-decoration:none;
-
     color:inherit;
 }
-
 .red-card:hover{
-
     transform:translateY(-10px);
-
     border-color:rgba(138,176,171,0.35);
-
     box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
-
 .red-card-top{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     margin-bottom:1rem;
 }
-
 .red-card-top span{
-
     color:var(--accent);
-
     font-size:1.5rem;
 }
-
 .red-card h3{
-
     color:var(--text-main);
 }
-
 .red-card h4{
-
     color:var(--accent);
-
     margin-bottom:1rem;
-
     font-weight:500;
 }
-
 .red-card p{
-
     color:var(--text-secondary);
-
     line-height:1.8;
 }

@@ -70,6 +70,18 @@
     color:var(--accent);
 }
 
+.hero h1 span.linea-nombre{
+
+    color:var(--text-main);
+}
+
+.hero-card{
+
+    will-change: transform;
+
+    transform-style: preserve-3d;
+}
+
 .hero-description{
 
     max-width:550px;

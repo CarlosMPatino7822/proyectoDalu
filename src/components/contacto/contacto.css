@@ -62,3 +62,47 @@
 
     cursor:pointer;
 }
+.secret-star{
+
+    font-size:2.5rem;
+
+    cursor:pointer;
+
+    transition:
+        left .4s ease,
+        top .4s ease,
+        text-shadow .4s ease;
+}
+.secret-star:hover{
+
+    text-shadow:
+        0 0 15px rgba(138,176,171,.7);
+}
+.star-message{
+
+    margin-top:1rem;
+
+    color:var(--text-secondary);
+
+    opacity:.8;
+
+    font-size:.9rem;
+}
+.star-container{
+
+    position:relative;
+
+    width:800px;
+
+    height:400px;
+
+    margin-top:2rem;
+}
+.star-group{
+
+    position:absolute;
+
+    transition:
+        left .4s ease,
+        top .4s ease;
+}

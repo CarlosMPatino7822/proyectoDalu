@@ -1,0 +1,207 @@
+.puerta{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    opacity:0;
+    animation: puertaReveal 2s forwards;
+    position:relative;
+    overflow:hidden;
+}
+@keyframes puertaReveal{
+    from{
+        opacity:0;
+        transform:translateY(80px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+.puerta::before{
+    content:"";
+    position:absolute;
+    width:800px;
+    height:800px;
+    border-radius:50%;
+    background:var(--glow);
+    filter:blur(180px);
+    opacity:.25;
+    animation: portalFloat 12s ease-in-out infinite;
+    z-index:0;
+}
+@keyframes portalFloat{
+    0%{
+        transform:
+        translate(-150px,-100px);
+    }
+    50%{
+        transform:
+        translate(150px,100px);
+    }
+    100%{
+        transform:
+        translate(-150px,-100px);
+    }
+}
+.puerta h2{
+    font-size:3rem;
+    margin-bottom:1rem;
+    color:var(--text-main);
+    opacity:0;
+    animation:
+        fadeIn 1s forwards;
+    animation-delay:1s;
+}
+.puerta p{
+    color:var(--text-secondary);
+    max-width:600px;
+    line-height:1.8;
+    margin-bottom:3rem;
+    opacity:0;
+    animation:
+        fadeIn 1s forwards;
+    animation-delay:2s;
+}
+.puerta button{
+    padding:1rem 3rem;
+    border-radius:999px;
+    cursor:pointer;
+    transition:.4s;
+    opacity:0;
+    animation:
+        fadeIn 1s forwards;
+    animation-delay:3s;
+}
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+.puerta button:hover{
+    transform:translateY(-5px);
+}
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:#ffe28a;
+    box-shadow:
+        0 0 8px #ffe28a,
+        0 0 15px #ffd700;
+    opacity:.8;
+    animation:
+        floatParticle linear infinite;
+}
+.particle:nth-child(odd){
+    left:20%;
+}
+.particle:nth-child(even){
+    left:80%;
+}
+@keyframes floatParticle{
+    from{
+        transform:
+        translateY(100vh);
+    }
+    to{
+        transform:
+        translateY(-100px);
+    }
+}
+.puerta button:hover{
+    transform:
+        translateY(-8px)
+        scale(1.05);
+    box-shadow:
+        0 0 40px rgba(138,176,171,.4);
+}
+.big-star{
+    position:absolute;
+    color:#ffe28a;
+    font-size:2rem;
+    text-shadow:
+        0 0 10px #ffe28a,
+        0 0 20px #ffe28a,
+        0 0 40px #ffd700;
+    animation:
+        pulseStar 4s ease-in-out infinite;
+}
+@keyframes pulseStar{
+    0%{
+        transform:scale(.8);
+        opacity:.05;
+    }
+    50%{
+        transform:scale(1.3);
+        opacity:.25;
+    }
+    100%{
+        transform:scale(.8);
+        opacity:.05;
+    }
+}
+.puerta::after{
+    content:"";
+    position:absolute;
+    display:none;
+    width:3px;
+    height:0;
+    background:var(--accent);
+    box-shadow:
+        0 0 40px rgba(138,176,171,.6);
+    animation:
+        crackOpen 3s forwards;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+@keyframes crackOpen{
+    from{
+        height:0;
+    }
+    to{
+
+        height:70vh;
+    }
+}
+.portal-ring{
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    border:2px solid rgba(255,226,138,.2);
+    box-shadow:
+        0 0 40px rgba(255,226,138,.3),
+        inset 0 0 40px rgba(255,226,138,.1);
+    animation:
+        rotatePortal 20s linear infinite;
+}
+@keyframes rotatePortal{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+.dark-overlay{
+    position:fixed;
+    inset:0;
+    background:black;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 2s;
+    z-index:5;
+}
+.dark-overlay.active{
+    opacity:.35;
+}
