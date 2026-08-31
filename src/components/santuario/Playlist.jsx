@@ -128,7 +128,7 @@ function Playlist() {
 
         let cancelado = false;
 
-        spotifyFetch(`/playlists/${playlistId}/items?limit=50&fields=items(item(name,uri,artists(name),album(images)))`, token)
+        spotifyFetch(`/playlists/${playlistId}/items?limit=100&fields=items(item(name,uri,artists(name),album(images)))`, token)
             .then((datos) => {
                 if (cancelado) return;
 
