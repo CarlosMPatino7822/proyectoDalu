@@ -836,85 +836,156 @@
 
 .playlist-lista {
     display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximate;
+    scroll-behavior: smooth;
+    padding: 0.3rem 0.1rem 1.1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(138, 176, 171, 0.35) transparent;
 }
-.playlist-item {
-    padding: 0.9rem 1.1rem;
-    border-radius: 16px;
+.playlist-lista::-webkit-scrollbar {
+    height: 6px;
+}
+.playlist-lista::-webkit-scrollbar-thumb {
+    background: rgba(138, 176, 171, 0.35);
+    border-radius: 999px;
+}
+.playlist-lista::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.playlist-carrusel-envoltura {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+}
+.playlist-hint {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    opacity: 0.7;
+    margin-top: 0.4rem;
+}
+.playlist-flecha {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    align-self: center;
+    border-radius: 50%;
+    border: 1px solid rgba(138, 176, 171, 0.25);
+    background: rgba(3, 18, 14, 0.55);
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s, border-color 0.3s;
+}
+.playlist-flecha svg {
+    width: 17px;
+    height: 17px;
+}
+.playlist-flecha:hover {
+    background: var(--accent);
+    color: #04140f;
+    border-color: var(--accent);
+    transform: scale(1.08);
+}
+
+.playlist-card {
+    flex: 0 0 auto;
+    width: 190px;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    padding: 0.9rem;
+    border-radius: 18px;
     border: 1px solid rgba(138, 176, 171, 0.12);
     background: rgba(138, 176, 171, 0.03);
     color: var(--text-main);
     transition: background 0.35s, border-color 0.35s;
 }
-.playlist-item:hover {
+.playlist-card:hover {
     background: rgba(138, 176, 171, 0.07);
     border-color: rgba(138, 176, 171, 0.28);
 }
-.playlist-item.activa {
+.playlist-card.activa {
     background: rgba(138, 176, 171, 0.1);
     border-color: var(--accent);
     box-shadow: 0 0 0 1px rgba(138, 176, 171, 0.15) inset;
 }
-.playlist-fila {
+.playlist-card-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+    background: radial-gradient(circle at 35% 30%, rgba(138, 176, 171, 0.25), #0a1613 75%);
+}
+.playlist-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.playlist-cover-fallback {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    width: 100%;
-}
-.playlist-play {
-    width: 42px;
-    height: 42px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    border: 1px solid rgba(138, 176, 171, 0.25);
-    background: rgba(138, 176, 171, 0.06);
+    justify-content: center;
     color: var(--accent);
-    display: inline-flex;
+}
+.playlist-cover-fallback svg {
+    width: 30px;
+    height: 30px;
+}
+.playlist-card-play {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: rgba(3, 18, 14, 0);
+    color: #fff;
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    transition: opacity 0.3s, background 0.3s;
 }
-.playlist-play svg {
-    width: 17px;
-    height: 17px;
+.playlist-card-play svg {
+    width: 30px;
+    height: 30px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
 }
-.playlist-play:hover {
-    background: var(--accent);
-    color: #04140f;
-    transform: scale(1.06);
-    box-shadow: 0 8px 22px rgba(138, 176, 171, 0.3);
+.playlist-card:hover .playlist-card-play,
+.playlist-card.activa .playlist-card-play {
+    opacity: 1;
+    background: rgba(3, 18, 14, 0.35);
 }
-.playlist-item.activa .playlist-play {
-    background: rgba(138, 176, 171, 0.14);
-    border-color: var(--accent);
+.playlist-card.activa .playlist-card-play {
+    color: var(--accent);
 }
-.playlist-cover {
-    width: 42px;
-    height: 42px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    object-fit: cover;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-}
-.playlist-info {
-    flex: 1;
-    min-width: 0;
+.playlist-card-info {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
+    min-width: 0;
 }
 .playlist-titulo {
     font-family: "Cormorant Garamond", serif;
-    font-size: 1.15rem;
-    line-height: 1.2;
+    font-size: 1.1rem;
+    line-height: 1.25;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .playlist-artista {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--text-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -922,15 +993,19 @@
 }
 .playlist-frase {
     font-family: "Cormorant Garamond", serif;
-    font-size: 0.92rem;
+    font-size: 0.85rem;
     color: var(--accent);
     font-style: italic;
-    white-space: nowrap;
-    flex-shrink: 0;
-    max-width: 160px;
+    opacity: 0.85;
+    margin-top: 0.3rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    opacity: 0.85;
+    white-space: nowrap;
+}
+.playlist-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.6rem;
 }
 .playlist-nota-btn.activo {
     color: #04140f;
@@ -951,16 +1026,16 @@
 }
 .playlist-nota-textarea {
     width: 100%;
-    margin-top: 0.85rem;
-    padding: 0.85rem 1rem;
-    border-radius: 12px;
+    margin-top: 0.6rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 10px;
     border: 1px solid rgba(138, 176, 171, 0.22);
     background: rgba(3, 18, 14, 0.4);
     color: var(--text-main);
     font-family: "Cormorant Garamond", serif;
-    font-size: 1rem;
+    font-size: 0.92rem;
     font-style: italic;
-    line-height: 1.55;
+    line-height: 1.5;
     resize: none;
     transition: border-color 0.3s, background 0.3s;
 }
@@ -978,7 +1053,7 @@
     display: inline-flex;
     align-items: flex-end;
     gap: 2px;
-    height: 14px;
+    height: 16px;
 }
 .ecualizador i {
     width: 3px;

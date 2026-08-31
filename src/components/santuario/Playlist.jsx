@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { easeCine } from "./santuarioConfig";
@@ -32,6 +32,8 @@ const ICONOS = {
     close: <path d="M6 6l12 12M18 6L6 18" />,
     spotify: <path d="M5 9.5c4.7-1.7 9.2-1.4 14 1M6.5 13c3.5-1 6.8-.8 10.5.8M8 16.2c2.4-.6 4.8-.4 7.2.6M12 22a10 10 0 100-20 10 10 0 000 20z" />,
     nota: <path d="M6 4h9l4 4v12H6zM15 4v4h4M9 12h6M9 15.5h6M9 8.5h3" />,
+    flechaIzq: <path d="M15 5l-7 7 7 7" />,
+    flechaDer: <path d="M9 5l7 7-7 7" />,
 };
 
 function Icono({ tipo }) {
@@ -88,6 +90,7 @@ function Playlist() {
     const [notaAbierta, setNotaAbierta] = useState(null);
     const [estadoConexion, setEstadoConexion] = useState("Conecta Spotify para escuchar desde aquí.");
     const { player, deviceId, estado, error } = useSpotifyPlayer(token);
+    const carruselRef = useRef(null);
 
     const canciones = cancionesSpotify.length ? cancionesSpotify : CANCIONES_BASE;
     const urisDisponibles = useMemo(() => canciones.map((cancion) => cancion.spotifyUri).filter(Boolean), [canciones]);
@@ -212,6 +215,13 @@ function Playlist() {
         setEstadoConexion("Conecta Spotify para escuchar desde aquí.");
     }
 
+    function desplazarCarrusel(direccion) {
+        const contenedor = carruselRef.current;
+        if (!contenedor) return;
+        const distancia = contenedor.clientWidth * 0.7;
+        contenedor.scrollBy({ left: direccion * distancia, behavior: "smooth" });
+    }
+
     return (
         <section className="s-section" id="playlist">
             <SeccionTitulo eyebrow="NUESTRO SONIDO" titulo="Playlist" />
@@ -236,78 +246,95 @@ function Playlist() {
                     </div>
                 </div>
 
-                <div className="playlist-lista">
-                    {canciones.map((c, i) => {
-                        const activa = indiceActivo === i;
-                        const id = idCancion(c);
-                        const notaPersonal = notas[id] ?? "";
-                        const notaVisible = notaAbierta === id;
-                        const tieneNota = notaPersonal.trim().length > 0;
+                <div className="playlist-carrusel-envoltura">
+                    <button type="button" className="playlist-flecha playlist-flecha-izq" onClick={() => desplazarCarrusel(-1)} title="Ver anteriores">
+                        <Icono tipo="flechaIzq" />
+                    </button>
 
-                        return (
-                            <motion.article
-                                key={id}
-                                className={`playlist-item ${activa ? "activa" : ""}`}
-                                initial={{ opacity: 0, x: -30 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, amount: 0.35 }}
-                                transition={{ duration: 0.6, delay: i * 0.08, ease: easeCine }}
-                            >
-                                <div className="playlist-fila">
-                                    <button type="button" className="playlist-play" onClick={() => reproducirCancion(i)} title={`Escuchar ${c.titulo}`}>
-                                        {activa && !pausado ? (
-                                            <span className="ecualizador">
-                                                <i /><i /><i />
-                                            </span>
+                    <div className="playlist-lista" ref={carruselRef}>
+                        {canciones.map((c, i) => {
+                            const activa = indiceActivo === i;
+                            const id = idCancion(c);
+                            const notaPersonal = notas[id] ?? "";
+                            const notaVisible = notaAbierta === id;
+                            const tieneNota = notaPersonal.trim().length > 0;
+
+                            return (
+                                <motion.article
+                                    key={id}
+                                    className={`playlist-card ${activa ? "activa" : ""}`}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, amount: 0.3 }}
+                                    transition={{ duration: 0.55, delay: i * 0.06, ease: easeCine }}
+                                >
+                                    <div className="playlist-card-cover">
+                                        {c.imagen ? (
+                                            <img src={c.imagen} alt="" />
                                         ) : (
-                                            <Icono tipo="play" />
+                                            <div className="playlist-cover-fallback">
+                                                <Icono tipo="spotify" />
+                                            </div>
                                         )}
-                                    </button>
-
-                                    {c.imagen && <img className="playlist-cover" src={c.imagen} alt="" />}
-
-                                    <div className="playlist-info">
-                                        <span className="playlist-titulo">{c.titulo}</span>
-                                        <span className="playlist-artista">{c.artista}</span>
+                                        <button type="button" className="playlist-card-play" onClick={() => reproducirCancion(i)} title={`Escuchar ${c.titulo}`}>
+                                            {activa && !pausado ? (
+                                                <span className="ecualizador">
+                                                    <i /><i /><i />
+                                                </span>
+                                            ) : (
+                                                <Icono tipo="play" />
+                                            )}
+                                        </button>
                                     </div>
 
-                                    <span className="playlist-frase">{c.frase}</span>
+                                    <div className="playlist-card-info">
+                                        <span className="playlist-titulo">{c.titulo}</span>
+                                        <span className="playlist-artista">{c.artista}</span>
+                                        <span className="playlist-frase">{c.frase}</span>
+                                    </div>
 
-                                    <button
-                                        type="button"
-                                        className={`playlist-icon-btn playlist-nota-btn ${notaVisible ? "activo" : ""}`}
-                                        onClick={() => alternarNota(c)}
-                                        title="Dejar una nota"
-                                    >
-                                        <Icono tipo="nota" />
-                                        {tieneNota && <span className="playlist-nota-punto" aria-hidden="true" />}
-                                    </button>
-                                </div>
-
-                                <AnimatePresence initial={false}>
-                                    {notaVisible && (
-                                        <motion.div
-                                            className="playlist-nota-panel"
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.4, ease: easeCine }}
+                                    <div className="playlist-card-footer">
+                                        <button
+                                            type="button"
+                                            className={`playlist-icon-btn playlist-nota-btn ${notaVisible ? "activo" : ""}`}
+                                            onClick={() => alternarNota(c)}
+                                            title="Dejar una nota"
                                         >
-                                            <textarea
-                                                className="playlist-nota-textarea"
-                                                value={notaPersonal}
-                                                onChange={(event) => actualizarNota(c, event.target.value)}
-                                                placeholder="Escribe aquí un recuerdo, una fecha, algo que sentiste con esta canción..."
-                                                rows="3"
-                                                autoFocus
-                                            />
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.article>
-                        );
-                    })}
+                                            <Icono tipo="nota" />
+                                            {tieneNota && <span className="playlist-nota-punto" aria-hidden="true" />}
+                                        </button>
+                                    </div>
+
+                                    <AnimatePresence initial={false}>
+                                        {notaVisible && (
+                                            <motion.div
+                                                className="playlist-nota-panel"
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.4, ease: easeCine }}
+                                            >
+                                                <textarea
+                                                    className="playlist-nota-textarea"
+                                                    value={notaPersonal}
+                                                    onChange={(event) => actualizarNota(c, event.target.value)}
+                                                    placeholder="Escribe aquí un recuerdo, una fecha, algo que sentiste con esta canción..."
+                                                    rows="3"
+                                                    autoFocus
+                                                />
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.article>
+                            );
+                        })}
+                    </div>
+
+                    <button type="button" className="playlist-flecha playlist-flecha-der" onClick={() => desplazarCarrusel(1)} title="Ver siguientes">
+                        <Icono tipo="flechaDer" />
+                    </button>
                 </div>
+                <p className="playlist-hint">Desliza o usa las flechas para ver más canciones →</p>
             </div>
 
             {createPortal(
