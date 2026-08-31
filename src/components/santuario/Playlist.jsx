@@ -17,7 +17,7 @@ const NOTAS_KEY = "dalu_notas_playlist";
 // "frase" es el texto fijo y artístico de cada canción (no se edita nunca).
 // La nota personal (editable) es un campo aparte que vive en localStorage.
 const CANCIONES_BASE = [
-    { titulo: "Happy Together", artista: "The Turtles", frase: "", spotifyUri: "https://open.spotify.com/intl-es/track/1JO1xLtVc8mWhIoE3YaCL0" },
+    { titulo: "Happy Together", artista: "The Turtles", frase: "La de siempre", spotifyUri: "" },
     { titulo: "The Red Means I Love You", artista: "Wolf Alice", frase: "La que abre todo", spotifyUri: "" },
     { titulo: "Cherry Waves", artista: "Joji", frase: "La de los viajes", spotifyUri: "" },
     { titulo: "When I'm Gone", artista: "Joji", frase: "La de extrañarte", spotifyUri: "" },
@@ -66,8 +66,8 @@ function idCancion(cancion) {
     return cancion.spotifyUri || `${cancion.titulo}-${cancion.artista}`;
 }
 
-function transformarTrack(item, indice) {
-    const track = item.track;
+function transformarTrack(entrada, indice) {
+    const track = entrada.item;
     return {
         titulo: track.name,
         artista: track.artists.map((artista) => artista.name).join(", "),
@@ -125,10 +125,16 @@ function Playlist() {
 
         let cancelado = false;
 
-        spotifyFetch(`/playlists/${playlistId}/tracks?limit=50&fields=items(track(name,uri,artists(name),album(images)))`, token)
+        spotifyFetch(`/playlists/${playlistId}/items?limit=50&fields=items(item(name,uri,artists(name),album(images)))`, token)
             .then((datos) => {
                 if (cancelado) return;
-                const tracks = datos.items.filter((item) => item.track?.uri).map(transformarTrack);
+
+                if (!datos?.items) {
+                    setEstadoConexion("Esta playlist no es tuya ni colaborativa; Spotify ya no permite leer sus canciones. Usa una playlist propia.");
+                    return;
+                }
+
+                const tracks = datos.items.filter((entrada) => entrada.item?.uri).map(transformarTrack);
                 setCancionesSpotify(tracks);
             })
             .catch(() => setEstadoConexion("No pude cargar la playlist; revisaré las canciones escritas aquí."));
