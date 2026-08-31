@@ -13,10 +13,14 @@ const letrasSecretas = {
 export function SecretProvider({ children }) {
     const [mensaje, setMensaje] = useState("");
     const [secretosEncontrados, setSecretosEncontrados] = useState(() => {
-        const guardados = localStorage.getItem("secretos");
-        return guardados
-            ? JSON.parse(guardados)
-            : [];
+        try {
+            const guardados = localStorage.getItem("secretos");
+            const parsed = guardados ? JSON.parse(guardados) : [];
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            localStorage.removeItem("secretos");
+            return [];
+        }
     });
     useEffect(() => {
         localStorage.setItem(
@@ -24,7 +28,6 @@ export function SecretProvider({ children }) {
             JSON.stringify(secretosEncontrados)
         );
     }, [secretosEncontrados]);
-
     const desbloquearSecreto = (id) => {
         if (!secretosEncontrados.includes(id)) {
             setSecretosEncontrados([
@@ -44,14 +47,14 @@ export function SecretProvider({ children }) {
         return secretosEncontrados.includes(id)
             ? letrasSecretas[id]
             : "_";
-
     });
     return (
         <SecretContext.Provider value={{
             secretosEncontrados,
             desbloquearSecreto,
             mensaje,
-            palabraOculta
+            palabraOculta,
+            setMensaje
         }}>
             {children}
         </SecretContext.Provider>

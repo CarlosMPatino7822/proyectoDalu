@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@0;1&family=Inter:ital,opsz@0,14..32;1,14..32&display=swap');
+
 :root {
 
   /* FONDOS */
@@ -20,56 +21,137 @@
   --glow: rgba(138, 176, 171, 0.15);
 
 }
-*{
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
+body {
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(138,176,171,0.12),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(94,124,118,0.12),
-      transparent 30%
-    ),
+    radial-gradient(circle at top left,
+      rgba(138, 176, 171, 0.12),
+      transparent 25%),
+    radial-gradient(circle at bottom right,
+      rgba(94, 124, 118, 0.12),
+      transparent 30%),
     var(--bg-main);
 
-  color:var(--text-main);
+  color: var(--text-main);
 
-  font-family:'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
-body::before{
 
-    content:"";
+body::before {
 
-    position:fixed;
+  content: "";
 
-    width:100%;
-    height:100%;
+  position: fixed;
 
-    top:0;
-    left:0;
+  width: 100%;
+  height: 100%;
 
-    background-image:
-        radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px);
+  top: 0;
+  left: 0;
 
-    background-size:3px 3px;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
 
-    pointer-events:none;
+  background-size: 3px 3px;
 
-    z-index:-1;
+  pointer-events: none;
+
+  z-index: -1;
 }
-html{
-    scroll-behavior:smooth;
+
+html {
+  scroll-behavior: smooth;
 }
-h1, h2, h3, h4, h5, h6{
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Cormorant Garamond', serif;
+}
+
+.scroll-star {
+
+  position: fixed;
+
+  bottom: 40px;
+
+  right: 40px;
+
+  font-size: 2rem;
+
+  cursor: pointer;
+
+  animation: pulseStar 2s infinite;
+}
+
+.secret-star {
+
+  position: relative;
+
+  margin-top: 2rem;
+
+  font-size: 2.5rem;
+
+  color: var(--accent);
+
+  cursor: pointer;
+
+  animation:
+    starFloat 3s ease-in-out infinite,
+    starGlow 2s ease-in-out infinite;
+
+  user-select: none;
+}
+
+@keyframes starGlow {
+
+  0% {
+    text-shadow:
+      0 0 5px rgba(138, 176, 171, .2);
+  }
+
+  50% {
+    text-shadow:
+      0 0 20px rgba(138, 176, 171, .8),
+      0 0 40px rgba(138, 176, 171, .4);
+  }
+
+  100% {
+    text-shadow:
+      0 0 5px rgba(138, 176, 171, .2);
+  }
+
+}
+
+@keyframes starFloat {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+.secret-star:hover{
+
+    transform:scale(1.2);
+
+    transition:.3s;
 }

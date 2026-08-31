@@ -5,7 +5,7 @@ import Redes from "../components/redes/redes.jsx"
 import Datos from "../components/datos/datos.jsx"
 import Contacto from "../components/contacto/contacto.jsx"
 import SecretNotification from "../components/notificacion/notificacion.jsx"
-
+import Puerta from "../components/puerta/Puerta.jsx"
 function App() {
   return (
     <>
@@ -16,8 +16,8 @@ function App() {
       <Datos></Datos>
       <Redes></Redes>
       <Contacto></Contacto>
+      <Puerta></Puerta>
     </>
   )
 }
-
 export default App
