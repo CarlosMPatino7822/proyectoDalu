@@ -744,7 +744,7 @@
 }
 /* ---------- PLAYLIST ---------- */
 .playlist-panel {
-    max-width: 700px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 2.2rem clamp(1.2rem, 3vw, 2.2rem);
     border-radius: 28px;
@@ -835,8 +835,12 @@
 }
 
 .playlist-lista {
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 158px;
+    column-gap: 14px;
+    row-gap: 14px;
     overflow-x: auto;
     scroll-snap-type: x proximate;
     scroll-behavior: smooth;
@@ -896,12 +900,12 @@
 
 .playlist-card {
     flex: 0 0 auto;
-    width: 190px;
+    width: 158px;
     display: flex;
     flex-direction: column;
     scroll-snap-align: start;
-    padding: 0.9rem;
-    border-radius: 18px;
+    padding: 0.75rem;
+    border-radius: 16px;
     border: 1px solid rgba(138, 176, 171, 0.12);
     background: rgba(138, 176, 171, 0.03);
     color: var(--text-main);
@@ -920,9 +924,9 @@
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.65rem;
     background: radial-gradient(circle at 35% 30%, rgba(138, 176, 171, 0.25), #0a1613 75%);
 }
 .playlist-card-cover img {
@@ -939,8 +943,8 @@
     color: var(--accent);
 }
 .playlist-cover-fallback svg {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
 }
 .playlist-card-play {
     position: absolute;
@@ -958,8 +962,8 @@
     transition: opacity 0.3s, background 0.3s;
 }
 .playlist-card-play svg {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
 }
 .playlist-card:hover .playlist-card-play,
@@ -973,19 +977,19 @@
 .playlist-card-info {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: 0.12rem;
     min-width: 0;
 }
 .playlist-titulo {
     font-family: "Cormorant Garamond", serif;
-    font-size: 1.1rem;
-    line-height: 1.25;
+    font-size: 1.02rem;
+    line-height: 1.22;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .playlist-artista {
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     color: var(--text-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -993,11 +997,11 @@
 }
 .playlist-frase {
     font-family: "Cormorant Garamond", serif;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--accent);
     font-style: italic;
     opacity: 0.85;
-    margin-top: 0.3rem;
+    margin-top: 0.25rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1005,15 +1009,24 @@
 .playlist-card-footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 0.6rem;
+    margin-top: 0.5rem;
+}
+.playlist-nota-btn {
+    width: 30px;
+    height: 30px;
+    position: relative;
+}
+.playlist-nota-btn svg {
+    width: 14px;
+    height: 14px;
 }
 .playlist-nota-btn.activo {
     color: #04140f;
 }
 .playlist-nota-punto {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 4px;
+    right: 4px;
     width: 7px;
     height: 7px;
     border-radius: 50%;
@@ -1021,21 +1034,86 @@
     box-shadow: 0 0 8px rgba(255, 226, 138, 0.7);
 }
 
-.playlist-nota-panel {
-    overflow: hidden;
+/* ---------- MODAL FLOTANTE DE NOTA (para no romper el grid de 2 filas) ---------- */
+.playlist-nota-fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(2, 10, 8, 0.6);
+    backdrop-filter: blur(6px);
 }
+.playlist-nota-modal {
+    position: relative;
+    width: min(92vw, 420px);
+    padding: 1.8rem 1.6rem;
+    border-radius: 22px;
+    background: linear-gradient(165deg, rgba(62, 80, 91, 0.22), rgba(3, 18, 14, 0.92));
+    border: 1px solid rgba(138, 176, 171, 0.28);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+}
+.playlist-nota-modal-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    font-style: italic;
+    font-family: "Cormorant Garamond", serif;
+    margin-bottom: 0.3rem;
+}
+.playlist-nota-modal h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.5rem;
+    margin: 0;
+    line-height: 1.25;
+}
+.playlist-nota-modal small {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+    margin-bottom: 1rem;
+}
+.playlist-nota-modal-cerrar {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(138, 176, 171, 0.2);
+    background: rgba(138, 176, 171, 0.05);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
+}
+.playlist-nota-modal-cerrar svg {
+    width: 13px;
+    height: 13px;
+}
+.playlist-nota-modal-cerrar:hover {
+    color: var(--text-main);
+    border-color: rgba(138, 176, 171, 0.45);
+}
+
 .playlist-nota-textarea {
     width: 100%;
-    margin-top: 0.6rem;
-    padding: 0.7rem 0.85rem;
-    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
     border: 1px solid rgba(138, 176, 171, 0.22);
     background: rgba(3, 18, 14, 0.4);
     color: var(--text-main);
     font-family: "Cormorant Garamond", serif;
-    font-size: 0.92rem;
+    font-size: 1rem;
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.55;
     resize: none;
     transition: border-color 0.3s, background 0.3s;
 }
@@ -1183,7 +1261,9 @@
 @media (max-width: 700px) {
     .playlist-panel { padding: 1.6rem 1rem; border-radius: 22px; }
     .playlist-toolbar { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
-    .playlist-frase { display: none; }
+    .playlist-flecha { display: none; }
+    .playlist-lista { grid-auto-columns: 132px; column-gap: 10px; }
+    .playlist-card { width: 132px; padding: 0.6rem; }
     .spotify-mini-player {
         width: 94vw;
         bottom: 16px;

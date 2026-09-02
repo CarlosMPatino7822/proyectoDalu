@@ -95,6 +95,7 @@ function Playlist() {
     const canciones = cancionesSpotify.length ? cancionesSpotify : CANCIONES_BASE;
     const urisDisponibles = useMemo(() => canciones.map((cancion) => cancion.spotifyUri).filter(Boolean), [canciones]);
     const cancionActiva = indiceActivo === null ? null : canciones[indiceActivo];
+    const cancionNotaAbierta = canciones.find((cancion) => idCancion(cancion) === notaAbierta) ?? null;
     const pausado = estado?.paused ?? true;
     const spotifyListo = Boolean(token && deviceId && player);
 
@@ -128,7 +129,7 @@ function Playlist() {
 
         let cancelado = false;
 
-        spotifyFetch(`/playlists/${playlistId}/items?limit=100&fields=items(item(name,uri,artists(name),album(images)))`, token)
+        spotifyFetch(`/playlists/${playlistId}/items?limit=50&fields=items(item(name,uri,artists(name),album(images)))`, token)
             .then((datos) => {
                 if (cancelado) return;
 
@@ -255,9 +256,8 @@ function Playlist() {
                         {canciones.map((c, i) => {
                             const activa = indiceActivo === i;
                             const id = idCancion(c);
-                            const notaPersonal = notas[id] ?? "";
                             const notaVisible = notaAbierta === id;
-                            const tieneNota = notaPersonal.trim().length > 0;
+                            const tieneNota = (notas[id] ?? "").trim().length > 0;
 
                             return (
                                 <motion.article
@@ -304,27 +304,6 @@ function Playlist() {
                                             {tieneNota && <span className="playlist-nota-punto" aria-hidden="true" />}
                                         </button>
                                     </div>
-
-                                    <AnimatePresence initial={false}>
-                                        {notaVisible && (
-                                            <motion.div
-                                                className="playlist-nota-panel"
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.4, ease: easeCine }}
-                                            >
-                                                <textarea
-                                                    className="playlist-nota-textarea"
-                                                    value={notaPersonal}
-                                                    onChange={(event) => actualizarNota(c, event.target.value)}
-                                                    placeholder="Escribe aquí un recuerdo, una fecha, algo que sentiste con esta canción..."
-                                                    rows="3"
-                                                    autoFocus
-                                                />
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
                                 </motion.article>
                             );
                         })}
@@ -336,6 +315,46 @@ function Playlist() {
                 </div>
                 <p className="playlist-hint">Desliza o usa las flechas para ver más canciones →</p>
             </div>
+
+            {createPortal(
+                <AnimatePresence>
+                    {cancionNotaAbierta && (
+                        <motion.div
+                            className="playlist-nota-fondo"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => setNotaAbierta(null)}
+                        >
+                            <motion.div
+                                className="playlist-nota-modal"
+                                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                                transition={{ duration: 0.4, ease: easeCine }}
+                                onClick={(event) => event.stopPropagation()}
+                            >
+                                <button type="button" className="playlist-nota-modal-cerrar" onClick={() => setNotaAbierta(null)} title="Cerrar">
+                                    <Icono tipo="close" />
+                                </button>
+                                <span className="playlist-nota-modal-eyebrow">{cancionNotaAbierta.frase}</span>
+                                <h3>{cancionNotaAbierta.titulo}</h3>
+                                <small>{cancionNotaAbierta.artista}</small>
+                                <textarea
+                                    className="playlist-nota-textarea"
+                                    value={notas[idCancion(cancionNotaAbierta)] ?? ""}
+                                    onChange={(event) => actualizarNota(cancionNotaAbierta, event.target.value)}
+                                    placeholder="Escribe aquí un recuerdo, una fecha, algo que sentiste con esta canción..."
+                                    rows="4"
+                                    autoFocus
+                                />
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
 
             {createPortal(
                 <AnimatePresence>
